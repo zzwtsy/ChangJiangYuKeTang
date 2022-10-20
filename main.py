@@ -172,13 +172,14 @@ if __name__ == "__main__":
                 continue
             url = 'https://changjiang.yuketang.cn/c27/online_courseware/xty/kls/pub_news/%s/' % i
             ret = requests.get(url, headers=headers).json()
-            m = 0
             temp1 = 0
             for s in ret['data']['content_info']:
-                if s['leaf_list'] and s['leaf_list'][temp1]['leaf_type'] != 6:
+                if 'leaf_list' not in s:
+                    continue
+                if s['leaf_list']:
                     temp1 += 1
                     for classInfo in s['leaf_list']:
-                        if classInfo['leaf_type'] == 6:
+                        if classInfo['leaf_type'] != 0:
                             print('非视频,跳过')
                             continue
                         VideoId = classInfo['id']
@@ -190,41 +191,39 @@ if __name__ == "__main__":
                         ccid = getccid['data']['content_info']['media']['ccid']
                         course_id = getccid['data']['course_id']
                         one_video_watcher(VideoId, s['name'], course_id, str(user_id), cid, skuid)
-                        print("%s已完成...." % 章节map[i])
-                else:
-                    if s['section_list']:
-                        for k in s['section_list']:
-                            m += 1
-                            if len(k['leaf_list']) == 1:
-                                for classInfo in k['leaf_list']:
-                                    if classInfo['leaf_type'] == 6:
-                                        print('非视频,跳过')
-                                        continue
-                                    VideoId = classInfo['id']
-                                    get_url = 'https://changjiang.yuketang.cn/mooc-api/v1/lms/learn/leaf_info/%s/%s/' % (
-                                        cid, VideoId)
-                                    getccid = requests.get(url=get_url, headers=headers).json()
-                                    skuid = getccid['data']['sku_id']
-                                    user_id = getccid['data']['user_id']
-                                    ccid = getccid['data']['content_info']['media']['ccid']
-                                    course_id = getccid['data']['course_id']
-                                    one_video_watcher(VideoId, s['name'], course_id, str(user_id), cid, skuid)
-                                    print("%s已完成...." % 章节map[i])
-                            else:
-                                temp2 = 0
-                                while temp2 < len(k['leaf_list']):
-                                    classInfo = k['leaf_list'][temp2]
-                                    temp2 += 1
-                                    if classInfo['leaf_type'] == 6:
-                                        print('非视频,跳过')
-                                        continue
-                                    VideoId = classInfo['id']
-                                    get_url = 'https://changjiang.yuketang.cn/mooc-api/v1/lms/learn/leaf_info/%s/%s/' % (
-                                        cid, VideoId)
-                                    getccid = requests.get(url=get_url, headers=headers).json()
-                                    skuid = getccid['data']['sku_id']
-                                    user_id = getccid['data']['user_id']
-                                    ccid = getccid['data']['content_info']['media']['ccid']
-                                    course_id = getccid['data']['course_id']
-                                    one_video_watcher(VideoId, s['name'], course_id, str(user_id), cid, skuid)
-                                    print("%s已完成...." % 章节map[i])
+                        print("%s已完成...." % s['name'])
+                if s['section_list']:
+                    for k in s['section_list']:
+                        if len(k['leaf_list']) == 1:
+                            for classInfo in k['leaf_list']:
+                                if classInfo['leaf_type'] != 0:
+                                    print('非视频,跳过')
+                                    continue
+                                VideoId = classInfo['id']
+                                get_url = 'https://changjiang.yuketang.cn/mooc-api/v1/lms/learn/leaf_info/%s/%s/' % (
+                                    cid, VideoId)
+                                getccid = requests.get(url=get_url, headers=headers).json()
+                                skuid = getccid['data']['sku_id']
+                                user_id = getccid['data']['user_id']
+                                ccid = getccid['data']['content_info']['media']['ccid']
+                                course_id = getccid['data']['course_id']
+                                one_video_watcher(VideoId, s['name'], course_id, str(user_id), cid, skuid)
+                                print("%s已完成...." % k['name'])
+                        else:
+                            temp2 = 0
+                            while temp2 < len(k['leaf_list']):
+                                classInfo = k['leaf_list'][temp2]
+                                temp2 += 1
+                                if classInfo['leaf_type'] != 0:
+                                    print('非视频,跳过')
+                                    continue
+                                VideoId = classInfo['id']
+                                get_url = 'https://changjiang.yuketang.cn/mooc-api/v1/lms/learn/leaf_info/%s/%s/' % (
+                                    cid, VideoId)
+                                getccid = requests.get(url=get_url, headers=headers).json()
+                                skuid = getccid['data']['sku_id']
+                                user_id = getccid['data']['user_id']
+                                ccid = getccid['data']['content_info']['media']['ccid']
+                                course_id = getccid['data']['course_id']
+                                one_video_watcher(VideoId, s['name'], course_id, str(user_id), cid, skuid)
+                                print("%s已完成...." % k['name'])
