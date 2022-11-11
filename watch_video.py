@@ -78,7 +78,6 @@ def one_video_watcher(video_id, video_name, cid, user_id, classroomid, skuid):
             submit_url = "https://changjiang.yuketang.cn/mooc-api/v1/lms/exercise/problem_apply/?term=latest&uv_id=" + uv_id
             r = requests.post(url=submit_url, headers=headers, data=data)
         except:
-            print('错误')
             pass
         progress = requests.get(url=get_url, headers=headers)
         tmp_rate = re.search(r'"rate":(.+?)[,}]', progress.text)
@@ -87,5 +86,5 @@ def one_video_watcher(video_id, video_name, cid, user_id, classroomid, skuid):
         val = tmp_rate.group(1)
         print("学习进度为：" + str(float(val) * 100) + "%/100%" + " last_point: " + str(video_frame))
         time.sleep(0.7)
-    print("视频" + video_id + " " + video_name + "学习完成！")
-    return 1
+        print("视频" + video_id + " " + video_name + "学习完成！")
+        return 1

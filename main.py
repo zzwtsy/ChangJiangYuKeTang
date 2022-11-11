@@ -74,7 +74,7 @@ if __name__ == "__main__":
                             print('《%s》非视频,跳过' % classInfo['title'])
                             continue
                         VideoId = classInfo['id']
-                        class_info_dict = build_requests.get_class_info_dict(cid, VideoId, classInfo['title'])
+                        build_requests.get_class_info_dict(cid, VideoId, classInfo['title'])
                 if s['section_list']:
                     for k in s['section_list']:
                         if len(k['leaf_list']) == 1:
@@ -83,7 +83,7 @@ if __name__ == "__main__":
                                     print('《%s》非视频,跳过' % classInfo['title'])
                                     continue
                                 VideoId = classInfo['id']
-                                class_info_dict = build_requests.get_class_info_dict(cid, VideoId, classInfo['title'])
+                                build_requests.get_class_info_dict(cid, VideoId, classInfo['title'])
                         else:
                             temp2 = 0
                             while temp2 < len(k['leaf_list']):
@@ -93,5 +93,5 @@ if __name__ == "__main__":
                                     print('《%s》非视频,跳过' % classInfo['title'])
                                     continue
                                 VideoId = classInfo['id']
-                                class_info_dict = build_requests.get_class_info_dict(cid, VideoId, classInfo['title'])
+                                build_requests.get_class_info_dict(cid, VideoId, classInfo['title'])
                 print("^^^《%s》已完成^^^" % s['name'])
